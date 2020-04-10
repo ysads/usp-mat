@@ -1,0 +1,205 @@
+\documentclass[12.5pt,reqno,a4paper]{amsart}
+%SetFonts
+
+%SetFonts
+
+%%%% Pacotes adicionais para enumeração de items e alinhamento de equações
+%%%%
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{mathtools}
+
+
+%%%% Escrevendo em português
+%%%% 
+\usepackage[utf8]{inputenc}
+
+%%%% Configurações para output correto de pdf
+%%%%
+
+\usepackage[T1]{fontenc}
+\usepackage{ae}
+\usepackage{aecompl}
+\usepackage{amssymb}
+
+%%%% Layout de página
+%%%%
+\usepackage{fullpage}
+\usepackage{setspace}
+\usepackage{bbm}
+
+%%%% Comandos personalizados
+%%%%
+\def\Assin#1{\noindent\textit{Assinatura}\strut\\%:\\
+\framebox[\textwidth]{\phantom{\vrule height#1}}}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+%%% Valor absoluto
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the 
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+\begin{document}
+
+\parindent=0pt
+
+\title[MAT0236 - P1]
+{\textit{MAT0236 Funções Diferenciáveis e Séries}\\\vspace{3\jot}}%\\\vspace{1\jot}
+
+\footskip=28pt
+
+\maketitle
+\thispagestyle{empty} 
+\pagestyle{plain}
+\onehalfspace
+
+\textbf{Nome: Ygor Sad Machado}\hfill
+\textbf{Número USP: 8910368}\null
+
+\medskip
+\textbf{Prova 1 - Solução}\hfill
+\textbf{Data: 10/04/2020}\null
+
+\noindent\rule{\textwidth}{0.4pt}
+
+\medskip
+\textbf{Lista 2 - Ex. 7.4}
+\medbreak
+Queremos determinar a convergência da seguinte série:
+
+\begin{equation*}
+    \sum_{n = 1}^{\infty} \frac{2^n}{(n!)^\lambda}, \lambda > 0
+\end{equation*}
+
+\bigskip
+A presença de um fatorial no denominador torna conveniente aplicar o teste da razão. Para tanto, vamos definir
+
+\begin{equation}
+    a_n = \frac{2^n}{(n!)^\lambda} \numberthis \label{7-4_original_series}
+\end{equation}
+
+\bigskip
+Em posse de $a_n$, aplicamos o seguinte limite:
+
+\begin{align*}
+    L &= \lim_{n \to \infty} \abs{\frac{a_{n+1}}{a_n}} \\
+      &= \lim_{n \to \infty} \abs{\frac{2^{n+1}}{(n+1)!^\lambda} \cdot \frac{(n!)^\lambda}{2^n}} \\
+	  & = \lim_{n \to \infty} \abs{\frac{2^{n+1}}{2^n} \cdot \frac{(n!)^\lambda}{(n+1)!^\lambda}}\\
+	  &= \lim_{n \to \infty} \abs{\frac{2}{(n+1)^\lambda}} \numberthis \label{7-4_final_abs}
+\end{align*}
+
+\bigskip
+Observe que \eqref{7-4_final_abs} é sempre maior que zero, pois $n$ vai ao infinito a partir de 1 e $\lambda > 0$. Logo, sem prejuízo, podemos tirar o módulo e continuar o cálculo do limite.
+
+\begin{align*}
+    L &= \lim_{n \to \infty} \frac{2}{(n+1)^\lambda} \\
+      &= 2 \cdot \lim_{n \to \infty} \frac{1}{(n+1)^\lambda} \\
+      &= 2 \cdot 0 \\
+      &= 0
+\end{align*}
+
+\bigskip
+Ora, segundo o teste da razão, se $L < 1$, então a série é absolutamente convergente. Logo, como chegamos a $L = 0$, podemos deduzir que \eqref{7-4_original_series} converge absolutamente, e portanto converge sempre.
+\qed\null
+
+\newpage
+\textbf{Lista 2 - Ex. 8.1}
+\medbreak
+
+Queremos determinar a convergência da seguinte série
+
+\begin{equation*}
+    \sum_{n = 1}^{\infty} {(-1)^n \frac{1}{\sqrt{n}}} \numberthis \label{8-1_original_series}
+\end{equation*}
+
+\bigskip
+Para isso, comecemos avaliando sua convergência absoluta. 
+
+\begin{align*}
+    \sum_{n = 1}^{\infty} \abs{(-1)^n \frac{1}{\sqrt{n}}} =
+    \sum_{n = 1}^{\infty} \abs{\frac{(-1)^n}{\sqrt{n}}} =
+    \sum_{n = 1}^{\infty} \frac{1}{\sqrt{n}} \\ \numberthis \label{8-1_abs_failed}
+\end{align*}
+
+\bigskip
+É fácil notar que \eqref{8-1_abs_failed} é divergente, pois ela é uma p-série com $p = \frac{1}{2}$. Já sabemos, portanto, que a série não converge absolutamente, precisamos então verificar sua convergência condicional. Para isso, vamos aplicar o teste da série alternada. Pelos critérios desse teste, \eqref{8-1_original_series} será convergente se, definindo $a_n = \frac{1}{\sqrt{n}}$:
+
+\bigskip
+$(i)$. $\lim_{n \to \infty} a_n = 0$
+
+\smallskip
+$(ii)$. $a_n$ for decrescente, ie, $a_{n+1} \leq a_n$ para $n$ suficientemente grandes. 
+
+\bigskip
+\bigskip
+Começando pelo critério $(i)$, é fácil notar que ele vale para o nosso cenário. Como $f(x) = \sqrt{x}$ é uma função crescente, sua discretização também o é. Logo, se fizermos $\lim_{n \to \infty} \frac{1}{\sqrt{n}}$, à medida que $n$ cresce, o denominador cresce junto, de modo que $\frac{1}{\sqrt{n}}$ descresce, aproximando-se cada vez mais de zero. Assim $\lim_{n \to \infty} \frac{1}{\sqrt{n}} = 0$.
+
+\bigskip
+Verificar o critério $(ii)$ significa afirmar que a razão entre dois valores consecutivos de $a_n$ é sempre inferior ou igual a 1, a partir de um dado $n$. 
+
+\begin{equation}
+    \left(\frac{a_{n+1}}{a_n}\right) \leq 1, n \geq N, \text{ para algum } N \geq 1
+\end{equation}
+
+\medskip
+Expandindo:
+
+\begin{align*}
+    \left(\frac{a_{n+1}}{a_n}\right) =
+    \left(\frac{1}{\sqrt{n+1}} \cdot \frac{\sqrt{n}}{1}\right) =
+    \left(\frac{\sqrt{n}}{\sqrt{n+1}}\right) \numberthis \label{8-1_final_abs}
+\end{align*}
+
+\bigskip
+\bigskip
+Fixemos então $N = 1$. Como já foi exposto no critério $(i)$, $\sqrt{n}$ é crescente, o que significa que $\sqrt{n + 1} \geq \sqrt{n}$. Daí podemos deduzir então que, para qualquer $n > N$:
+
+\begin{equation}
+    \left(\frac{\sqrt{n}}{\sqrt{n+1}}\right) \leq 1
+\end{equation}
+
+\bigskip
+\bigskip
+Isso mostra que $a_n$ é uma sequência decrescente, o que implica que o critério $ii$ também é verdadeiro. Logo, a série \eqref{8-1_original_series} converge absolutamente pelo teste da série alternada.
+\qed\null
+
+\newpage
+\textbf{Lista 2 - Ex. 10.3}
+\medbreak
+
+Considere a série abaixo.
+
+\begin{equation*}
+    \sum_{n = 2}^{\infty} {(-1)^{n + 1} \frac{1}{n ^ \text{ln x}}} \numberthis \label{10-3_original_series}
+\end{equation*}
+
+\bigskip
+Estamos interessados em saber para quais $x \in \mathbb{R}$ ela converge. Para tanto, comecemos verificando sua convergência absoluta.
+
+\begin{align*}
+    \sum_{n = 2}^{\infty} \abs{(-1)^{n + 1} \cdot \frac{1}{n^\text{ln x}}}
+    &= \sum_{n = 2}^{\infty} \abs{\frac{(-1)^{n + 1}}{n^\text{ln x}}}\\
+    &= \sum_{n = 2}^{\infty} \frac{1}{n^\text{ln x}} \numberthis \label{10-3_abs_conv}
+\end{align*}
+
+\bigskip
+Para que \eqref{10-3_original_series} possua convergência absoluta – e portanto convergência –, \eqref{10-3_abs_conv} precisa convergir. Observe que esta última se assemelha a uma p-série com $p = \ln{x}$. Ora, mas sabemos que p-séries convergem se $p > 1$. Logo, para que \eqref{10-3_abs_conv} convirja, $\ln{x} > 1$, isto é, $x > e$.
+
+\bigskip
+Sintetizando, \eqref{10-3_original_series} converge para todo $x > e$, $x \in \mathbb{R}$.
+\qed\null
+
+\endgroup
+\end{document}
