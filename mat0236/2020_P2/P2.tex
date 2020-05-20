@@ -1,0 +1,272 @@
+\documentclass[12.5pt,reqno,a4paper]{amsart}
+%SetFonts
+
+%SetFonts
+
+%%%% Pacotes adicionais para enumeração de items e alinhamento de equações
+%%%%
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{mathtools}
+
+
+%%%% Escrevendo em português
+%%%% 
+\usepackage[utf8]{inputenc}
+
+%%%% Configurações para output correto de pdf
+%%%%
+
+\usepackage[T1]{fontenc}
+\usepackage{ae}
+\usepackage{aecompl}
+\usepackage{amssymb}
+
+%%%% Layout de página
+%%%%
+\usepackage{fullpage}
+\usepackage{setspace}
+\usepackage{bbm}
+
+%%%% Comandos personalizados
+%%%%
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+%%% Valor absoluto
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the 
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+\begin{document}
+
+\parindent=0pt
+
+\title[MAT0236 - P2]
+{\textit{MAT0236 Funções Diferenciáveis e Séries}\\\vspace{3\jot}}%\\\vspace{1\jot}
+
+\footskip=28pt
+
+\maketitle
+\thispagestyle{empty} 
+\pagestyle{plain}
+\onehalfspace
+
+\textbf{Nome: Ygor Sad Machado}\hfill
+\textbf{Número USP: 8910368}\null
+
+\medskip
+\textbf{Prova 2 - Solução}\hfill
+\textbf{Data: 20/05/2020}\null
+
+\noindent\rule{\textwidth}{0.4pt}
+
+\medskip
+\textbf{Lista 4 - Ex. 7.a}
+\medbreak
+Considere a seguinte função:
+
+\begin{equation*}
+    f(x) = \int_0^x \frac{\sin t}{t} dt \numberthis \label{7-base_int}
+\end{equation*}
+
+\bigskip
+\textit{Série de potências}
+\medbreak
+Vamos começar determinando a série de potências associada a $f$. Sabemos que a série de Taylor associada à função $\sin(x)$ é:
+
+\begin{equation*}
+    \sin(t) = \sum_{n=0}^\infty (-1)^n \frac{t^{2n + 1}}{(2n + 1)!}
+\end{equation*}
+
+\bigskip
+Basta agora dividir essa série por $t$ e teremos a representação desejada:
+
+\begin{equation*}
+    \frac{\sin(t)}{t} = \sum_{n=0}^\infty (-1)^n \frac{t^{2n}}{(2n + 1)!} \numberthis \label{7-sint_t}
+\end{equation*}
+
+\bigskip
+\bigskip
+\textit{Intervalo de convergência}
+\medbreak
+Por conta da presença de fatoriais, é conveniente analisar a convergência de \eqref{7-sint_t} usando o teste da razão. Para isso, seja:
+
+\begin{equation*}
+    a_n = (-1)^n \frac{t^{2n}}{(2n + 1)!}
+\end{equation*}
+
+\bigskip
+Em seguida avaliamos o valor do limite $L$ abaixo.
+
+\begin{align*}
+    L &= \lim_{n \to \infty} \abs{\frac{(-1)^{n+1} \cdot t^{2(n+1)}}{(2(n+1) + 1)!} \cdot \frac{(2n+1)!}{(-1)^n \cdot t^{2n}}}\\
+      &= \lim_{n \to \infty} \abs{(-1)\frac{t^2}{(2n + 3)(2n + 2)}}\\
+      &= \lim_{n \to \infty} \frac{t^2}{(2n + 3)(2n + 2)}\\
+      &= 0
+\end{align*}
+
+\bigskip
+Como $L = 0$, pelo critério da razão, temos que \eqref{7-sint_t} converge absolutamente e, portanto, é convergente sempre. Isso significa que o intervalo de convergência da série é igual à reta real, isto é, $R = +\infty$.
+
+\bigskip
+\bigskip
+\textit{Cálculo de $f(1)$}
+\medbreak
+Para solucionar a última parte do exercício, vamos desenvolver a integral \eqref{7-base_int} usando a representação em séries de potência para \eqref{7-sint_t}.
+
+\begin{align*}
+    f(x) &= \int_0^x \frac{\sin t}{t} dt\\
+         &= \int_0^x \sum_{n=0}^{\infty} (-1)^n \frac{t^{2n}}{(2n + 1)!} dt\\
+         &= C + \Bigg[\sum_{n=0}^{\infty} \frac{(-1)^n}{(2n + 1)!} \frac{t^{2n + 1}}{(2n + 1)}\Bigg]_{t=0}^x\\ \numberthis\label{7-integral_eval}
+\end{align*}
+
+\bigskip
+Para determinarmos o valor de $C$, podemos usar que função em $t=0$ vale 1 juntamente com o fato de que o valor de uma integral com limites de integração iguais é sempre 0. Isto é:
+
+\begin{align*}
+    f(0) &= \int_0^0 \frac{\sin t}{t} = 0\\
+    f(0) &=  C + \Bigg[\sum_{n=0}^{\infty} \frac{(-1)^n}{(2n + 1)!} \frac{t^{2n + 1}}{(2n + 1)}\Bigg]_{t=0}^0\\
+    0 &= C + 1\\
+    C &= 1\\
+\end{align*}
+
+\bigskip
+Finalmente podemos expandir a expressão \eqref{7-integral_eval} usando o valor calculado de $C$:
+
+\begin{align*}
+    f(1) &= C + \Bigg[\sum_{n=0}^{\infty} \frac{(-1)^n}{(2n + 1)!} \frac{t^{2n + 1}}{(2n + 1)}\Bigg]_{t=0}^x\\
+         &= 1 + \frac{1}{1}\frac{1}{1} - \frac{1}{3!}\frac{1}{3} + \frac{1}{5!}\frac{1}{5} - \frac{1}{7!}\frac{1}{7} + \frac{1}{9!}\frac{1}{9} + ... - 1\\
+         &= 1 - \frac{1}{18} + \frac{1}{600} - \frac{1}{35280} + ...\\
+         &\approx 0.94608, \text{ com } \abs{\text{erro}} \leq \frac{1}{9! 9} < \frac{1}{10^{-6}}\\
+\end{align*}
+
+\bigskip
+Observe que, para determinar até onde expandir a série, usamos o argumento de que a precisão de uma expansão de Taylor é, no máximo, o valor do maior termo negligenciado. Nesse caso, expandimos até que encontrássemos o primeiro termo menor que $10^{-6}$ – em particular esse termo é $\dfrac{1}{9! 9}$.
+\qed\null
+
+\newpage
+\textbf{Lista 5 - Ex. 2.b}
+\medbreak
+Considere o seguinte limite
+
+\begin{equation*}
+    \lim_{x \to 1} x^\frac{1}{1 - x} 
+\end{equation*}
+
+\bigskip
+Para permitir a sua resolução, podemos fazer algumas manipulações:
+
+\bigskip
+\begin{align*}
+    \lim_{x \to 1} x^{\frac{1}{1 - x}}
+        &= \lim_{x \to 1} e^{\ln{x^\frac{1}{1 - x}}}\\
+        &= \lim_{x \to 1} e^{(\frac{1}{1 - x}) \cdot \ln{x}} \numberthis\label{2-lim_exp}\\
+\end{align*}
+
+\bigskip
+\bigskip
+Agora precisamos encontrar uma expansão de Taylor conveniente para aplicar ao limite. Observe que não podemos trabalhar com a expansão de $\frac{1}{1-x}$, pois ela não converge quando $x = 1$ – de fato, essa expressão sequer está definida nesse ponto. Por isso, prossigamos com a expansão de $f(x) = \ln x$ ao redor de $a = 1$:
+
+\bigskip
+\bigskip
+Para nos auxiliar, considere os primeiros quatro valores para $f^{(k)}(1)$:
+
+\bigskip
+\begin{align*}
+    f^{(0)} (x) &= \ln x \implies f^{(0)} (1) = 0 \\
+    f^{(1)} (x) &= \frac{1}{x} \implies f^{(1)} (1) = 1 \\
+    f^{(2)} (x) &= -\frac{1}{x^2} \implies f^{(2)} (1) = -1 \\
+    f^{(3)} (x) &= \frac{2}{x^3} \implies f^{(3)} (1) = 2 \\
+\end{align*}
+
+\bigskip
+\bigskip
+De posse desses valores, podemos executar a expansão:
+
+\begin{align*}
+    T(x) &= \sum_{k=0}^\infty \frac{f^{(k)}(a)}{k!}(x-a)^k\\
+         &= \sum_{k=0}^\infty \frac{\ln^{(k)}(1)}{k!}(x-1)^k\\
+         &= \frac{0}{0!}(x-1)^0 + \frac{1}{1!}(x-1)^1 - \frac{1}{2!}(x-1)^2 + \frac{2}{3!}(x-1)^3 + ...\\
+         &= (x-1) - \frac{1}{2}(x-1)^2 + \frac{1}{3}(x-1)^3 + ... \numberthis \label{2-ln_expansion}
+\end{align*}
+
+\newpage
+Substituindo \eqref{2-ln_expansion} em \eqref{2-lim_exp}, obtemos:
+
+\begin{align*}
+    \lim_{x \to 1} e^{(\tfrac{1}{1 - x}) \ln{x}} &= \lim_{x \to 1} e^{\big(\tfrac{1}{1 - x}\big) \big((x-1) - \tfrac{1}{2}(x-1)^2 + \tfrac{1}{3}(x-1)^3 + ...\big)}\\
+        &= \lim_{x \to 1} e^{\big(\tfrac{(x-1)}{1-x} - \tfrac{1}{2}\tfrac{(x-1)^2}{1-x} + \tfrac{1}{3}\tfrac{(x-1)^3}{1-x} + ...\big)}\\
+        &= \lim_{x \to 1} e^{\big((-1) + \tfrac{1}{2}(x-1) - \tfrac{1}{3}(x-1)^2 + ...\big)}\\
+        &= e^{\lim_{x \to 1}{\big((-1) + \tfrac{1}{2}(x-1) - \tfrac{1}{3}(x-1)^2 + ...\big)}}\\
+        &= e^{-1}\\
+        &= \frac{1}{e}\\
+\end{align*}
+
+\bigskip
+Note que, como $e^x$ é função contínua, pudemos passar o limite para dentro do expoente no terceiro passo, o que nos permitiu continuar a demonstração.
+\qed\null
+
+\newpage
+\textbf{Lista 2 - Ex. 5}
+\medbreak
+Seja $\{f_n\}$ uma sequência de funções tal que $f_n: [1,2] \to \mathbb{R}$, com $f_n(x) = \dfrac{x^2 + nx + 3}{n}$. Queremos demonstrar que $\lim_{n \to \infty} f_n$ converge uniformemente sobre $[1,2]$.
+
+\bigskip
+Iniciamos provando que $\{f_n\}$ converge pontualmente. Para isso considere o seguinte conjunto:
+
+\begin{equation*}
+S := \{x : \exists \lim_{n \to \infty} f_n(x)\}    
+\end{equation*}
+
+\bigskip
+Vamos definir agora $f: S \to \mathbb{R}$, tal que $f(x) = \lim_{n \to \infty} f_n(x)$.
+
+\begin{align*}
+    f(x) &= \lim_{n \to \infty} f_n(x)\\
+         &= \lim_{n \to \infty} \dfrac{x^2 + nx + 3}{n}\\
+         &= \lim_{n \to \infty} \dfrac{x^2}{n} + x + \dfrac{3}{n}\\
+         &= x
+\end{align*}
+
+\bigskip
+Isso demonstra que $\{f_n\}$ converge pontualmente a f no conjunto $S$.
+
+\bigskip
+Agora, precisamos determinar um $\epsilon$ tal que $|f_n(x) - f(x)| < \epsilon, \forall x \in S$.
+
+\begin{align*}
+    \abs{f_n(x) - f(x)} &= \abs{\frac{x^2 + nx + 3}{n} - x}\\
+                        &= \abs{\frac{x^2 + 3}{n}}\\
+                        &= \frac{x^2 + 3}{n}\\
+\end{align*}
+
+\bigskip
+Mas sabemos que $x \in [1,2]$, logo $(x^2 + 3) \in [4,7]$, o que implica: 
+
+\begin{equation*}
+    \frac{x^2 + 3}{n} \leq \frac{7}{n} \leq \epsilon
+\end{equation*}
+
+\bigskip
+Assim, dado $\epsilon > 0$, se tomarmos $N$ tal que $N > \dfrac{7}{\epsilon}$, teremos que $\forall n \geq N$:
+
+\begin{equation*}
+|f_n(x) - f(x)| < \epsilon, \forall x \in S    
+\end{equation*}
+
+\bigskip
+O que prova que $\{f_n\}$ é uniformemente convergente sobre $[1,2]$.
+\qed\null
+
+\endgroup
+\end{document}
