@@ -1,0 +1,238 @@
+\documentclass[9.5pt,reqno,a4paper]{amsart}
+
+%SetFonts
+
+%%%% Pacotes adicionais para enumeração de items e alinhamento de equações
+%%%%
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{mathtools}
+
+%%%% Permite syntax highlight
+%%%%
+\usepackage{minted}
+\usepackage{xcolor}
+\definecolor{softgray}{gray}{0.96}
+\setminted{
+linenos,
+framesep=10px,
+baselinestretch=1.2,
+bgcolor=softgray
+}
+
+%%%% Escrevendo em português
+%%%% 
+\usepackage[utf8]{inputenc}
+
+%%%% Configurações para output correto de pdf
+%%%%
+\usepackage[T1]{fontenc}
+\usepackage{ae}
+\usepackage{aecompl}
+\usepackage{amssymb}
+
+%%%% Layout de página
+%%%%
+\usepackage{fullpage}
+\usepackage{setspace}
+\usepackage{bbm}
+
+\begin{document}
+\parindent=0pt
+
+\title[MAE0221]
+{MAE0221 Probabilidade I}\vspace{3\jot}%\\\vspace{1\jot}
+
+% \footskip=10pt
+
+\maketitle
+\thispagestyle{empty} 
+\pagestyle{plain}
+\onehalfspace
+
+\textbf{Nome: Ygor Sad Machado}\hfill
+\textbf{Número USP: 8910368}\null
+
+\medskip
+\textbf{Lista 7}\hfill
+\textbf{Data: 27/05/2020}\null
+
+\noindent\rule{\textwidth}{0.4pt}
+
+\bigskip
+Considere inicialmente o seguinte código de \textit{setup}. Note que ele possui a definição de algumas funções que serão utilizadas em todas as simulações a seguir.
+
+\bigskip
+\begin{minted}{python}
+from random import random, seed
+
+# Fixa a semente do gerador de números aleatórios para manter
+# a consistência nos resultados da simulação
+seed(1)
+
+# Calcula a distância Manhattan entre dois pontos p1 e p2
+def manhattan_distance(p1, p2):
+    return sum(abs(a-b) for a, b in zip(p1, p2))
+
+# Gera um ponto aleatório num grid quadrado de lado L
+def rand_coord(l):
+    return [random() * l, random() * l]
+
+# Realiza o experimento um determinado número de vezes para
+# um valor de L e um número de ambulâncias fixados
+def experiment(num, l, ambulances):
+    sum_distance = 0
+
+    for i in range(int(num)):
+        accident = rand_coord(l)
+
+        # Gera uma lista contendo o número de ambulâncias recebido
+        coord_ambulances = [rand_coord(l) for j in range(ambulances)]
+
+        # Soma somente a menor distância entre alguma ambulância e
+        # o local do acidente
+        sum_distance += min(
+            [manhattan_distance(accident, amb) for amb in coord_ambulances]
+        )
+
+    return sum_distance / num
+\end{minted}
+
+\newpage
+\noindent\rule{\textwidth}{0.4pt}
+\textbf{Item a.}
+
+Neste item estamos interessados em descobrir a esperança para a distância entre dois pontos usando $L=1$ como parâmetro. Para isso foi usado o seguinte código:
+
+\begin{minted}{python}
+def item_a():
+    print("A. ")
+
+    for n in [1e5, 1e6, 1e7]:
+        expectation = experiment(num=n, l=1, ambulances=1)
+        print("{it:.1e} iterations => {e}".format(it=n, e=expectation))
+
+    print("\n")
+\end{minted}
+
+A execução dessa função gera como saída:
+
+\begin{minted}{python}
+1.0e+05 iterations => 0.666830572178
+1.0e+06 iterations => 0.666817365745
+1.0e+07 iterations => 0.666774043139
+\end{minted}
+
+Isso sugere uma convergência no valor da esperança, de modo que $\mathbb{E} \approx 0.66666...$ parece ser uma boa aproximação para ela.
+
+\bigskip
+\noindent\rule{\textwidth}{0.4pt}
+\textbf{Item b.}
+
+Já neste item, estamos interessados em descobrir uma relação entre o valor $L$ e a esperança $\mathbb{E}$ para a distância, estando o número de ambulâncias fixado em $n=1$. Para isso usamos o seguinte código:
+
+\begin{minted}{python}
+def item_b():
+    print("B. ")
+
+    for length in range(2,8):
+        expectation = experiment(num=1e6, l=length, ambulances=1)
+        print("L={l} => {e}".format(l=length, e=expectation))
+
+    print("\n")
+\end{minted}
+
+Cuja saída é:
+
+\begin{minted}{python}
+L=2 => 1.333307524
+L=3 => 2.00006665411
+L=4 => 2.66444358418
+L=5 => 3.33203882442
+L=6 => 3.99962416282
+L=7 => 4.6727126035
+\end{minted}
+
+Note que todos os valores que obtivemos correspondem a dois terços do valor de seus respectivos $L$, o que nos sugere que a esperança pode ser aproximada por $\mathbb{E} = \frac{2L}{3}$.
+
+\bigskip
+\noindent\rule{\textwidth}{0.4pt}
+\textbf{Item c.}
+
+Já para estas simulações, vamos fixar o número de ambulâncias em $n=2$ e executar o código abaixo.
+
+\begin{minted}{python}
+def item_c():
+    print("C. ")
+
+    for n in [1e5, 1e6, 1e7]:
+        expectation = experiment(num=1e6, l=1, ambulances=2)
+        print("{it:.1e} iterations => {e}".format(it=n, e=expectation))
+
+    print("\n")
+\end{minted}
+
+Para ele obtivemos a seguinte saída:
+
+\begin{minted}{python}
+1.0e+05 iterations => 0.487881704132
+1.0e+06 iterations => 0.487956896953
+1.0e+07 iterations => 0.487897822258
+\end{minted}
+
+Essa saída nos sugere que um boa aproximação para a esperança nessas condições é $\mathbb{E} \approx 0.488$.
+
+\bigskip
+\noindent\rule{\textwidth}{0.4pt}
+\textbf{Item d.}
+
+Por fim, neste item queremos descobrir o menor número de ambulâncias necessárias para que a esperança da distância entre o local do acidente e a ambulância mais próxima seja $\frac{L}{3}$. Para isso fixamos um valor inicial arbitrariamente alto para $\mathbb{E}$ e vamos incrementando o número de ambulâncias até que $\mathbb{E} \leq \frac{L}{3}$. Além disso, variamos $L$ e o número de experimentos de modo a ter um panorama para diferentes tamanhos de \textit{grid}. O código abaixo foi usado nessa simulação.
+
+\begin{minted}{python}
+def item_d():
+    print("D.")
+
+    for n in [1e5, 1e6, 1e7]:
+        print("{it:.1e} iterations".format(it=n))
+
+        for length in range(1,5):
+            num_ambulances = 0
+            expectation = 1e20
+
+            while (expectation >= length / 3.0):
+                num_ambulances += 1
+                expectation = experiment(num=n, l=length, ambulances=num_ambulances)
+
+            print(
+                "L={l} | expectation={e} => {amb} ambulances".format(
+                    l=length, e=expectation, amb=num_ambulances
+                )
+            )
+        print("\n")
+\end{minted}
+
+A execução de dessa função tem como saída:
+
+\begin{minted}{python}
+1.0e+05 iterations
+L=1 | expectation=0.31074490733 => 5 ambulances
+L=2 | expectation=0.622679090939 => 5 ambulances
+L=3 | expectation=0.934401355886 => 5 ambulances
+L=4 | expectation=1.24493205269 => 5 ambulances
+
+1.0e+06 iterations
+L=1 | expectation=0.310965785717 => 5 ambulances
+L=2 | expectation=0.621694269052 => 5 ambulances
+L=3 | expectation=0.932674487682 => 5 ambulances
+L=4 | expectation=1.24288063528 => 5 ambulances
+
+1.0e+07 iterations
+L=1 | expectation=0.311061783846 => 5 ambulances
+L=2 | expectation=0.621796002463 => 5 ambulances
+L=3 | expectation=0.932712301752 => 5 ambulances
+L=4 | expectation=1.24334908597 => 5 ambulances
+\end{minted}
+
+Observe que, independentemente do número de experimentos realizados ou do tamanho de $L$, o resultado dos experimentos aponta sempre para 5 ambulâncias. Parece razoável então afirmar que o número mínimo de ambulâncias é constante e sempre igual a 5.
+
+\end{document}
